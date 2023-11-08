@@ -20,7 +20,8 @@
           }
     },
     "plugins": [
-        "react"
+        "react",
+        "jest"
     ],
     "rules": {
         "indent": ["warn", 2],

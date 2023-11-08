@@ -120,6 +120,7 @@ userController.addUser = async (req, res, next) => {
         message: { err: 'Bad Request' },
       });
     } else {
+      console.log("entered line 123 else block of code")
       const addedUser = await model.User.create({ name, userName, password });
       res.locals.addedUser = addedUser;
       res.locals.userId = addedUser._id;

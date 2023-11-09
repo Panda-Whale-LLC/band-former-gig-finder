@@ -16,6 +16,7 @@ authController.createAuthJWT = (req, res, next) => {
         { expiresIn: '1h' }
       );
       console.log('into token!');
+      console.log('token', res.locals.token);
       res.locals.token = token;
       return next();
     } catch (err) {

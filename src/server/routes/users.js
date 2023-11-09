@@ -44,6 +44,10 @@ usersRouter.post(
   userController.verifyUser,
   authController.createAuthJWT,
   (req, res) => {
+    console.log('userInfoObj', {
+      userInfo: res.locals.userData,
+      token: res.locals.token,
+    });
     return res
       .status(200)
       .json({ userInfo: res.locals.userData, token: res.locals.token });

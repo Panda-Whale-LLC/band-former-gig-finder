@@ -76,9 +76,9 @@ userController.getUser = async (req, res, next) => {
   }
 };
 userController.getUserByToken = async (req, res, next) => {
-  console.log('Get user by token called')
+  console.log('Get user by token called');
   try {
-    const id =  res.locals.userId;
+    const id = res.locals.userId;
     const foundUser = await model.User.findOne({ _id: id });
 
     if (!foundUser) {
@@ -112,7 +112,7 @@ userController.getUserByToken = async (req, res, next) => {
 userController.addUser = async (req, res, next) => {
   try {
     const { name, userName, password } = req.body;
-    
+
     const foundUser = await model.User.findOne({ userName });
     if (foundUser) {
       return next({
@@ -121,10 +121,11 @@ userController.addUser = async (req, res, next) => {
         message: { err: 'Bad Request' },
       });
     } else {
+      console.log('entered line 123 else block of code');
       const addedUser = await model.User.create({ name, userName, password });
       res.locals.addedUser = addedUser;
       res.locals.userId = addedUser._id;
-      console.log('add user success', addedUser)
+      console.log('add user success', addedUser);
       return next();
     }
   } catch (error) {
@@ -190,8 +191,10 @@ userController.deleteUser = async (req, res, next) => {
 
 userController.verifyUser = async (req, res, next) => {
   try {
-    //console.log('verify user', req.body);
-    const result = await model.User.findOne({ userName: req.body.userName }).exec();
+    console.log('verify user', req.body);
+    const result = await model.User.findOne({
+      userName: req.body.userName,
+    }).exec();
     if (result === null) {
       //fix this in the component to handle the error
       console.log('navigation to signup is required');
@@ -220,6 +223,7 @@ userController.verifyUser = async (req, res, next) => {
 
         res.locals.userId = result._id;
         res.locals.userData = shallowCopy;
+        console.log('userData', res.locals.userData);
         return next();
       } else {
         //fix this in the component to handle the error

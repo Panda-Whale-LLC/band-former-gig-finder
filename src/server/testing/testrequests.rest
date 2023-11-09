@@ -1,0 +1,52 @@
+POST http://localhost:3000/users/
+Content-Type: application/json
+
+{
+  "name": "Testing",
+  "userName": "UserTest14",
+  "password": "test"
+}
+
+###
+
+DELETE http://localhost:3000/posts/654c14a390bd588942cb80f8
+
+
+###
+
+POST http://localhost:3000/posts/
+Content-Type: application/json
+
+{
+  "title": "test post 2",
+  "dates": "2025-09-19T23:15:30.000Z",
+  "user_id": "654adb488b2d7c398c8f8b83",
+  "description": "this is the second test"
+}
+
+###
+
+GET http://localhost:3000/posts/
+
+###
+
+GET http://localhost:3000/posts/654c155990bd588942cb80fd
+
+###
+
+PATCH http://localhost:3000/posts/654c14a390bd588942cb80f8
+Content-Type: application/json
+
+{
+  "title": "updated test post",
+  "dates": "2025-09-19T23:15:30.000Z",
+  "description": "this is an update"
+}
+
+###
+PATCH
+http://localhost:3000/users/654adb488b2d7c398c8f8b83
+Content-Type: application/json
+Content-Type: authorization, "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1NGFkYjQ4OGIyZDdjMzk4YzhmOGI4MyIsImlhdCI6MTY5OTU2MDI2NywiZXhwIjoxNjk5NTYzODY3fQ.acmCiR2Mtx_cmZ9OdfGNhOBWzDVpydsbkQoYZ4cd86Q"
+
+{"profilephoto_URL": "urlToPhoto"}

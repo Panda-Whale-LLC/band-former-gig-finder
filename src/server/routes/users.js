@@ -31,41 +31,44 @@ usersRouter.post(
 
 
 //verify tokens provided in components
-usersRouter.post('/verify',
-  authController.verifyJWTBody,
-  (req, res) => {
-    return res.status(200).json({success: res.locals.loggedIn});
-  }
-);
+usersRouter.post('/verify', authController.verifyJWTBody, (req, res) => {
+  return res.status(200).json({ success: res.locals.loggedIn });
+});
 
 //login route -get un pw, return jwt
 
-usersRouter.post('/login',
+usersRouter.post(
+  '/login',
   userController.verifyUser,
   authController.createAuthJWT,
   (req, res) => {
-    return res.status(200).json({userInfo:res.locals.userData, token: res.locals.token});
-  });
-
+    console.log('userInfoObj', {
+      userInfo: res.locals.userData,
+      token: res.locals.token,
+    });
+    return res
+      .status(200)
+      .json({ userInfo: res.locals.userData, token: res.locals.token });
+  }
+);
 
 //logout route
 
 //get one user by ID
 
-usersRouter.get('/:id', 
-  userController.getUser,
-  (req, res) => {
-    return res.status(200).json(res.locals.foundUser);
-  }
-);
+usersRouter.get('/:id', userController.getUser, (req, res) => {
+  return res.status(200).json(res.locals.foundUser);
+});
 
 //get current user by token
-usersRouter.post('/profile', 
+usersRouter.post(
+  '/profile',
   authController.verifyJWTBody,
   userController.getUserByToken,
   (req, res) => {
     return res.status(200).json(res.locals.foundUser);
-  });
+  }
+);
 
 //patch user by ID
 usersRouter.patch(

@@ -31,7 +31,7 @@ postsRouter.patch('/:id',
     return res.status(200).json(res.locals.updatedPost);
   });
 
-//delete a post b yid
+//delete a post by id
 postsRouter.delete('/:id', 
   postController.deletePost,  
   (req, res) => {

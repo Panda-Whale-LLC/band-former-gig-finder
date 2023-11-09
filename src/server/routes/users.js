@@ -4,7 +4,7 @@ const usersRouter = express.Router();
 const authController = require('../controllers/authController.js');
 
 //this is messed up - somehow, the proxy settings in webpack dev are and are messing up content-type; this is our workaround
-usersRouter.use(express.json({ type: 'text/plain' }));
+usersRouter.use(express.json({type: 'text/plain'}));
 
 //get all users//don't use this
 usersRouter.get('/', userController.getAllUsers, (req, res) => {
@@ -26,11 +26,9 @@ usersRouter.post(
   authController.createAuthJWT,
   (req, res) => {
     console.log('final part of route');
-    return res
-      .status(200)
-      .json({ user: res.locals.addedUser, token: res.locals.token });
-  }
-);
+    return res.status(200).json({user: res.locals.addedUser, token: res.locals.token});
+  });
+
 
 //verify tokens provided in components
 usersRouter.post('/verify', authController.verifyJWTBody, (req, res) => {
@@ -92,6 +90,7 @@ usersRouter.delete(
     return res.status(200).json(res.locals.deletedUser);
   }
 );
+
 
 module.exports = {
   usersRouter: usersRouter,

@@ -1,13 +1,14 @@
 const { User } = require('../models/bandFormerModels.js');
 const fs = require('fs');
 const photoController = {};
+
 photoController.addPhoto = async (req, res, next) =>{
-  
+
   try {
     console.log('reached server');
     console.log('file', req.file);
     console.log('body', Object.keys(req.body));
-    fs.rename(req.file.path, `uploads/${Object.keys(req.body)[0]}.${req.file.filename}.${req.file.originalname}`, (err)=>{
+    fs.rename(req.file.path, `uploads/${Object.keys(req.body)[0]}_profilepicture.jpg`, (err)=>{
       if (err) throw (err);
       console.log('Rename complete');
     });

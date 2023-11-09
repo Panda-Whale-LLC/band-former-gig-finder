@@ -112,7 +112,7 @@ userController.getUserByToken = async (req, res, next) => {
 userController.addUser = async (req, res, next) => {
   try {
     const { name, userName, password } = req.body;
-    
+    const profilephoto_URL = `/uploads/${userName}_profilepic.jpg`
     const foundUser = await model.User.findOne({ userName });
     if (foundUser) {
       return next({
@@ -121,10 +121,10 @@ userController.addUser = async (req, res, next) => {
         message: { err: 'Bad Request' },
       });
     } else {
-      const addedUser = await model.User.create({ name, userName, password });
+      const addedUser = await model.User.create({ name, userName, password, profilephoto_URL });
       res.locals.addedUser = addedUser;
       res.locals.userId = addedUser._id;
-      console.log('add user success', addedUser)
+      console.log('add user success', addedUser);
       return next();
     }
   } catch (error) {

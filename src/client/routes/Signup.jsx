@@ -22,13 +22,13 @@ const Signup = props => {
   const registerUser = async () => {
     const result = await fetch('/users', {
       method: 'POST',
-      headers: {"Content-Type": "application/json",},
-      mode: "no-cors",
+      headers: {'Content-Type': 'application/json',},
+      mode: 'no-cors',
       body: JSON.stringify({name: name, userName: username, password: password})
     });
     const output = await result.json();
     if (output){
-      console.log('result', output)
+      console.log('result', output);
       localStorage.setItem('ssid', output.token);
       setTimeout(navigate('/'), 2000);
     }
@@ -44,15 +44,15 @@ const Signup = props => {
 
       <div className='inner'>
   
-          <label htmlFor='userName'>Username</label><br />
-          <input type='text' id='userName'  value={username} onChange={changeUsername} required></input><br />
+        <label htmlFor='userName'>Username</label><br />
+        <input type='text' id='userName'  value={username} onChange={changeUsername} required></input><br />
 
-          <label htmlFor='password'>Password</label><br />
-          <input type='password' id='password'  value={password} onChange={changePassword} required></input><br />
+        <label htmlFor='password'>Password</label><br />
+        <input type='password' id='password'  value={password} onChange={changePassword} required></input><br />
 
-          <label htmlFor='fullname'>Fullname</label><br />
-          <input type='text' id='fullname' value={name} onChange={changeName} ></input><br />
-          <button type='submit' onClick={registerUser}>Sign Up</button>
+        <label htmlFor='fullname'>Fullname</label><br />
+        <input type='text' id='fullname' value={name} onChange={changeName} ></input><br />
+        <button type='submit' onClick={registerUser}>Sign Up</button>
 
 
       </div>

@@ -67,7 +67,7 @@ const Profile = props => {
         <button className="button-87" id='feedButton' onClick={ ()=> navigate('/') }>Feeds</button>
       </div>
       <div className='profileinner'>
-        {/* <img src={ props.photo } alt='profile photo' /> */}
+        <img src={ props.photo } alt='profile photo' />
         <h1 className='username'>{ userInfo.userName }</h1>
         {/* basic info goes here */}
 
@@ -105,10 +105,11 @@ const Profile = props => {
       <div className='formuoli'>
         <form action="http://localhost:3000/photo" method="post" encType='multipart/form-data'>
           <label htmlFor='avatar'>
+            
             Would you like to upload your avatar?<br/>
           </label>
           <input type="file" id="avatar" name="avatar" accept='image/*'/>
-          <input type="hidden" name={userInfo.name} value={ userInfo.name }/>
+          <input type="hidden" name={ userInfo.userName } value={ userInfo.userName }/>
           <button id="submitButton" name="submitButton">Submit</button>
         </form>
       </div>

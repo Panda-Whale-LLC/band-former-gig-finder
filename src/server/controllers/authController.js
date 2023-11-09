@@ -1,5 +1,6 @@
 const jwt = require('node-jsonwebtoken');
 const { User } = require('../models/bandFormerModels.js');
+const { createActionCreatorInvariantMiddleware } = require('@reduxjs/toolkit');
 
 const secret = `${process.env.JWT_SECRET}`;
 const authController = {};
@@ -55,7 +56,7 @@ authController.verifyJWT = async (req, res, next) => {
         console.log('body set', res.locals.body);
         return next(
           next({
-            log: `authController.verifyJWT: JWT is invalid, user needs to login again.`,
+            log: 'authController.verifyJWT: JWT is invalid, user needs to login again.',
             code: 400,
             message: { err: 'New Login required.' },
           })
@@ -68,6 +69,8 @@ authController.verifyJWT = async (req, res, next) => {
         message: { err: 'An error occurred' },
       });
     }
+  } else {
+    console.log('Error! No authorization token!');
   }
 };
 

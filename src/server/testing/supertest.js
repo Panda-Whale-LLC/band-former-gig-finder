@@ -16,7 +16,7 @@ describe('server router tests', () => {
         const newUser = {
           name: 'Pikachu',
           // usernames are unique! Update each test (there's probably a better way to do this)
-          userName: 'ElectroMan30',
+          userName: 'ElectroMan31',
           password: 'Charizard_is_my_homie',
         };
 
@@ -49,7 +49,7 @@ describe('server router tests', () => {
           })
           .catch(() => {
             if (AggregateError) {
-              console.log('AggregateError at /users/ post request');
+              console.log('AggregateError at /users/ delete request');
             }
           });
       });
@@ -78,8 +78,22 @@ describe('server router tests', () => {
             expect(res.body.userName).toEqual(newUser.userName);
             expect(res.body.user_id).toEqual(newUser.user_id);
           })
+          .catch(() => {
+            if (AggregateError) {
+              console.log('AggregateError at /users/ delete request');
+            }
+          });
+      });
+
+      it('responds with an error if delete request is missing a user id and authorization token', () => {
+        return request(server)
+          .delete('/users/')
+          .expect(404)
           .catch((error) => {
             console.log(error);
+            if (AggregateError) {
+              console.log('AggregateError at /users/ delete request');
+            }
           });
       });
     });
@@ -88,7 +102,7 @@ describe('server router tests', () => {
   // tests for posts router
   describe('/posts/', () => {
     describe('GET', () => {
-      it('responds with 200 status when a new post, the response body is an array, and it includes _id, title, description, and user_id properties', () => {
+      it('responds with 200 status, the response body is an array, and each nested object includes _id, title, description, and user_id properties', () => {
         return request(server)
           .get('/posts/')
           .expect('Content-Type', /application\/json/)
@@ -102,8 +116,7 @@ describe('server router tests', () => {
               expect(nestedObj).toHaveProperty('user_id');
             });
           })
-          .catch((error) => {
-            console.log(error);
+          .catch(() => {
             if (AggregateError) {
               console.log('AggregateError at /posts/ get request');
             }
@@ -133,8 +146,7 @@ describe('server router tests', () => {
             expect(response.body).toHaveProperty('user_id');
             expect(response.body).toHaveProperty('_id');
           })
-          .catch((error) => {
-            console.log(error);
+          .catch(() => {
             if (AggregateError) {
               console.log('AggregateError at /posts/ post request');
             }
@@ -143,7 +155,7 @@ describe('server router tests', () => {
     });
 
     describe('PATCH', () => {
-      it('responds with 200 status when a new post is created and response body includes a title property', () => {
+      it('responds with 200 status when a post is updated, the response body is an Object and it includes _id, title, description, and user_id properties', () => {
         const id = '654c155990bd588942cb80fd';
         const updatedPost = {
           title: 'Updated Post',
@@ -163,10 +175,9 @@ describe('server router tests', () => {
             expect(response.body).toHaveProperty('user_id');
             expect(response.body.title).toEqual(updatedPost.title);
           })
-          .catch((error) => {
-            console.log(error);
+          .catch(() => {
             if (AggregateError) {
-              console.log('AggregateError at /posts/ get request');
+              console.log('AggregateError at /posts/ patch request');
             }
           });
       });
@@ -196,8 +207,10 @@ describe('server router tests', () => {
             expect(res.body.description).toEqual(newPost.description);
             expect(res.body.user_id).toEqual(newPost.user_id);
           })
-          .catch((error) => {
-            console.log(error);
+          .catch(() => {
+            if (AggregateError) {
+              console.log('AggregateError at /posts/ delete request');
+            }
           });
       });
     });

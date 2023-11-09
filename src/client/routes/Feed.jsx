@@ -9,6 +9,7 @@ import '../styles/stylesheet.scss';
 
 const Feed = props => {
 
+  const [posts, setPosts] = useState([]);
   const [idGood, setIdGood ] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -16,23 +17,9 @@ const Feed = props => {
   const state = useSelector(data => data.user);
   const userToken = state.userToken;
   const userInfo = state.userInfo;
-  const posts = ['Looking for guitarist...', 'Gig Opportunity: Need Bands for Local Festival', 'JAM SESSION THIS SUNDAY!!'];
 
-  // const [posts, updatePosts] = useState([]);
+  console.log('state:', state)
 
-  // useEffect(() => {
-  //   fetch('/posts')
-  //     .then((resp) => resp.json())
-  //     .then((data) => {
-  //       // console.log(data);
-  //       updatePosts(data);
-  //     })
-  //     .catch((error) => {
-  //       console.log(error);
-  //       console.log('Error fetching data', error);
-  //     });
-  // }, [posts]);
-    // verify user token
   useEffect(() =>{
     const fetchData = async(endPoint, body) => {
       const resp = await fetch(endPoint, body);
@@ -83,7 +70,7 @@ const Feed = props => {
       mode: "no-cors",
     })
     .then(data => {
-      console.log('We have user data!');
+      console.log('We have user data!:', data);
       dispatch(setCredentials(data))
     })
     .catch(err=> {
@@ -91,26 +78,29 @@ const Feed = props => {
     })
   },[]);
 
-  const feedPosts = posts.map((el, i) => {
-    // console.log(el);
-    return <FeedPosts key={ i } />;
-  });
-  console.log(userInfo)
+  useEffect(() => {
+    fetch('/posts/')
+      .then((res) => res.json())
+      .then((posts) => {
+        console.log('Fetched All Posts:', posts);
+        setPosts(posts);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+  console.log('USER INFO:', userInfo)
   return (
     <div id='feed-wrap-container'>
       <div id='feed-inner'>
-        {/* feed items */}
-        { feedPosts }
+        {/* FeedPosts should fetch and display posts on its own */}
+        <FeedPosts />
       </div>
       <div id='sidebar'>
-        {/* sidebar */}
          <Sidebar userName={userInfo.userName} name={userInfo.name} userID={userInfo.id} />
       </div>
-
     </div>
   );
 };
-
-
 
 export default Feed;

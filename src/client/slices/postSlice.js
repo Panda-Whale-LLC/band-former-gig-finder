@@ -1,71 +1,90 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
+// Define initial state
 const initialState = {
-  readValue: 'hello bandos',
-  editValue: 'test',
+  posts: [],
+  status: 'idle', 
+  error: null,
 };
 
-/*
-posts: [],
+// Async thunk action for fetching posts
+export const fetchPosts = createAsyncThunk('post/fetchPosts', async () => {
+ 
+  const response = await fetch('/posts');
+  if(!response.ok) {
+    throw new Error('Failed to fetch posts');
+  }
+  return response.json();
+});
 
-*/
+//Async thunk for adding new post
+export const addNewPost = createAsyncThunk('post/addNewPost', async (newPost)=> {
+  const response = await fetch('/posts', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(newPost),
+  });
+  if (!response.ok) {
+    throw new Error('Failed to add new post');
+  }
+  return response.json();
+});
 
+//Async thunk for deleting post
+export const deletePost = createAsyncThunk('post/deletePost', async (postId, { rejectWithValue })=> {
+  try {
+    const response = await fetch(`/posts/${postId}`, {
+      method: 'DELETE',
+    });
+    if (!response.ok) {
+      throw new Error(`Delete failed with status: ${response.status}`);
+    }
+    return postId;
+  } catch (error) {
+    return rejectWithValue(error.message);
+  }
+});
+
+// Slice
 const postSlice = createSlice({
   name: 'post',
   initialState,
   reducers: {
-    readTest: (state, action) => {
-      console.log('read test reducer', state.readValue);
-    },
-    writeTest: (state, action) => {
-      state.editValue = action.payload;
-      console.log('write test reducer', state.editValue);
-    },
+    // would add synchronous reducers here e.g. filterposts
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchPosts.pending, (state) => {
+        state.status = 'loading';
+      })
+      .addCase(fetchPosts.fulfilled, (state, action) => {
+        state.status = 'succeeded';
+        // assuming the payload is an array of posts
+        state.posts = action.payload;
+      })
+      .addCase(fetchPosts.rejected, (state, action) => {
+        state.status = 'failed';
+        state.error = action.error.message;
+      })
+      .addCase(addNewPost.fulfilled, (state, action) => {
+        // Assuming the payload is a single post object
+        state.posts.push(action.payload);
+      })
+      .addCase(addNewPost.rejected, (state, action) => {
+        state.error = action.error.message;
+      })
+      .addCase(deletePost.fulfilled, (state, action) => {
+        // Assuming the payload is the id of the post to delete
+        state.posts = state.posts.filter(post => post.id !== action.payload);
+      })
+      .addCase(deletePost.rejected, (state, action) => {
+        state.error = action.error.message; // or action.payload if that is what is intended
+      });
   },
 });
 
-/*
-{
-  name: 'post,
-  actions: {
-    'readTest': [f>],
-    'writeTest': [f>],
-  },
-  reducer
-}
+export const postActions = { fetchPosts, addNewPost, deletePost };
 
-// writeTest(hello) => 'post/readTest' 
-// {
-  type: 'post/readTest',
-  payload: 'hello'
-}
-
-payload = {userId: stuff, userName:otherstuff}
-
-
-*/
-
-// const AllPosts = useSelector(state => state.post.posts)
-// const AllPosts = useSelectr(getAllPosts)
-
-// const getAllPosts = state => state.post.posts;
-
-/*
-export const INSTRUMENTS = Object.freeze({
-  GUITAR: 'GUITAR',
-  DRUMS: 'DRUMS',
-  BASS: 'BASS',
-  VOCALS: 'VOCALS',
-  VIOLIN: 'VIOLIN',
-  CELLO: 'CELLO',
-  VIOLA: 'VIOLA',
-  PIANO: 'PIANO',
-  TRUMPET: 'TRUMPET',
-  FLUTE: 'FLUTE',
-});
-*/
-const { actions, reducer } = postSlice;
-
-const { readTest, writeTest } = actions;
-
-export default reducer;
+export default postSlice.reducer;

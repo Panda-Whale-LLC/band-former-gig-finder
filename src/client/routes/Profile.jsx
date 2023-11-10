@@ -47,7 +47,7 @@ const Profile = props => {
   const navigate = useNavigate();
   const data = useLoaderData();
   console.log('data', data);
-
+  // const profileURL = `./uploads/${data.userName}_profilepicture.jpg`;
  
   // const toFeed = () => {
   //   navigate('/');
@@ -67,7 +67,7 @@ const Profile = props => {
         <button className="button-87" id='feedButton' onClick={ ()=> navigate('/') }>Feeds</button>
       </div>
       <div className='profileinner'>
-        {/* <img src={ props.photo } alt='profile photo' /> */}
+        <img src={require(`/uploads/${data.userName}_profilepicture.jpg`)} alt='profile photo' style={{maxHeight:'20vh'}}/>
         <h1 className='username'>{ userInfo.userName }</h1>
         {/* basic info goes here */}
 
@@ -103,12 +103,14 @@ const Profile = props => {
         {/* <button id='make-post' onClick={ clicker }>make post</button> */}
       </div>
       <div className='formuoli'>
-        <form action="http://localhost:3000/photo" method="post" encType='multipart/form-data'>
+        <iframe name="dummyframe" id="dummyframe" style={{display: 'none'}}></iframe>
+        <form action="http://localhost:3000/photo" method="post" encType='multipart/form-data' target="dummyframe">
           <label htmlFor='avatar'>
+            
             Would you like to upload your avatar?<br/>
           </label>
           <input type="file" id="avatar" name="avatar" accept='image/*'/>
-          <input type="hidden" name={userInfo.name} value={ userInfo.name }/>
+          <input type="hidden" name={ userInfo.userName } value={ userInfo.userName }/>
           <button id="submitButton" name="submitButton">Submit</button>
         </form>
       </div>

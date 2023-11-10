@@ -44,19 +44,20 @@ const Sidebar = ({ userName, name, userID }) => {
   // const userID = userInfo._id;
   console.log('USER DATA',userName, name, userID)
   return (
-    <div >
+    <div className='sidebar'>
       {/* profile photo goes here if stretch hits */}
       <h2 className='sidebar-username'>{userName}</h2>
       <h4 className='sidebar-name'>{name}</h4>
-      <Link to={`/user/${userID}`}>View Profile</Link>
+      <Link className='link' to={`/user/${userID}`}><button className='submitButton'>View Profile</button></Link>
 
-      <form onSubmit={handleSubmit}>
+      <form className= 'post-form' onSubmit={handleSubmit}>
         <br />
         <label>
         Title:
         </label>
         <br />
         <input
+        className='sidebar-title'
           type='text'
           name='title'
           value={form.title}
@@ -70,6 +71,7 @@ const Sidebar = ({ userName, name, userID }) => {
         </label>
         <br />
         <input
+        className='sidebar-dates'
           type='text'
           name='dates'
           value={form.dates}
@@ -82,6 +84,7 @@ const Sidebar = ({ userName, name, userID }) => {
         Description:
         </label>
         <input
+        className='sidebar-description'
           type='text'
           name='description'
           value={form.description}
@@ -90,7 +93,7 @@ const Sidebar = ({ userName, name, userID }) => {
         </input>
         <br />
         <br />
-        <button id='make-post' type='submit'>Submit Post</button>
+        <button className='submitButton' id='make-post' type='submit'>Submit Post</button>
       </form>
 
     </div>

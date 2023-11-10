@@ -48,7 +48,6 @@ const Profile = (props) => {
   const navigate = useNavigate();
   const data = useLoaderData();
   console.log('data', data);
-
   // const toFeed = () => {
   //   navigate('/');
   // }
@@ -68,9 +67,12 @@ const Profile = (props) => {
           Feeds
         </button>
       </div>
-      <div className="profileinner">
-        {/* <img src={ props.photo } alt='profile photo' /> */}
-        <h1 className="username">{userInfo.userName}</h1>
+      <div className='profileinner'>
+        <picture>
+        <img src={require(`/uploads/${data.userName}_profilepicture.jpg`)} alt='profile photo' style={{maxHeight:'20vh'}}/>
+        </picture>
+        
+        <h1 className='username'>{ userInfo.userName }</h1>
         {/* basic info goes here */}
         <div className="pDiv">
           <div id="pLabel">Name: </div>
@@ -125,10 +127,12 @@ const Profile = (props) => {
           </div>
           <div className="formuoli">
         <br />
+        <iframe name="dummyframe" id="dummyframe" style={{display: 'none'}}></iframe>
         <form
           action="http://localhost:3000/photo"
           method="post"
           encType="multipart/form-data"
+          target='dummyframe'
         >
           <label className='pDiv' htmlFor="avatar">
             Would you like to upload your avatar?

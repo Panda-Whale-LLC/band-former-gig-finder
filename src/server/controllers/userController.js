@@ -112,7 +112,7 @@ userController.getUserByToken = async (req, res, next) => {
 userController.addUser = async (req, res, next) => {
   try {
     const { name, userName, password } = req.body;
-    
+    const profilephoto_URL = `/uploads/${userName}_profilepic.jpg`;
     const foundUser = await model.User.findOne({ userName });
     if (foundUser) {
       return next({
